@@ -174,15 +174,14 @@ class webhookReceiver(BaseHTTPRequestHandler):
         log.debug('gitlab connection should be closed now.')
         # parse data
         text = json.loads(data_string)
-        text = json.dumps(text, indent=2)
-        if git_project in text:
-            log.debug('project is in text')
+        if text['repository']['name'].lower() == git_project.lower():
+            log.debug('repository name matches with project name')
             self.git_cleanup()
             current_branches = self.git_handle_branches()
             self.git_remove_stale_branches(current_branches)
             log.debug('post complete')
         else:
-            log.debug('project name not in text, ignoring post')
+            log.debug('repository name does not match project name, ignoring post')
 
     def log_message(self, formate, *args):
         """
