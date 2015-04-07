@@ -50,6 +50,10 @@ git_project = "newpuppet"
 # this is the git ssh account
 git_ssh = "git@github.com"
 
+# the listen address and port
+listen_address = "0.0.0.0"
+listen_port = 8000
+
 log_max_size = 25165824         # 24 MB
 log_level = logging.INFO
 #log_level = logging.DEBUG      # DEBUG is quite verbose
@@ -192,7 +196,7 @@ def main():
         the main event.
     """
     try:
-        server = HTTPServer(('', 8000), webhookReceiver)
+        server = HTTPServer((listen_address, listen_port), webhookReceiver)
         log.info('started web server...')
         server.serve_forever()
     except KeyboardInterrupt:
